@@ -1,7 +1,7 @@
-package com.example.t_project.ZooMarket
+package com.example.t_project.zooMarket
 
 class ZooMarket {
-    fun catOrDog(animal: Animal): String {
+    fun getAnimalType(animal: Animal): String {
         if (animal is Cat) {
             return "Кошка"
         }
