@@ -12,7 +12,7 @@ class JokeGenerator {
         return Joke(
             id = index,
             category = "category $index",
-            question = "$index",
+            question = "question $index",
             answer = "answer $index"
         )
     }
