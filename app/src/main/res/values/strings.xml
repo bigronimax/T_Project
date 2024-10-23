@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">T_Project</string>
+    <string name="category_name">(Christmas)</string>
+    <string name="question_text">What does Santa suffer from if he gets stuck in a chimney?</string>
+    <string name="answer_text">- Claustrophobia!</string>
 </resources>
