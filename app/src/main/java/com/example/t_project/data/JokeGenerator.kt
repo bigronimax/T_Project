@@ -1,7 +1,5 @@
 package com.example.t_project.data
 
-import kotlin.random.Random
-
 class JokeGenerator {
     fun generateJokeData(): List<Joke> {
         return buildList {

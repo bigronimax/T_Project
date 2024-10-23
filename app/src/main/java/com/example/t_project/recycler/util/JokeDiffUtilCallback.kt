@@ -2,7 +2,6 @@ package com.example.t_project.recycler.util
 
 import androidx.recyclerview.widget.DiffUtil
 import com.example.t_project.data.Joke
-import java.util.Locale.Category
 
 class JokeDiffUtilCallback(
     private val oldList: List<Joke>,
