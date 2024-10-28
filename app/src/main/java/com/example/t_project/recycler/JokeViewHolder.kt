@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.t_project.data.Joke
 import com.example.t_project.databinding.JokeItemBinding
 
-class JokeViewHolder(val binding: JokeItemBinding): RecyclerView.ViewHolder(binding.root) {
+class JokeViewHolder(private val binding: JokeItemBinding): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(joke: Joke) {
         bindCategory(joke.category)

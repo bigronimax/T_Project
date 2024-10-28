@@ -18,13 +18,13 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         createRecycleView()
-        generateDate()
+        generateData()
     }
     private fun createRecycleView() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = GridLayoutManager(this, 1)
     }
-    private fun generateDate() {
+    private fun generateData() {
         val data = generator.generateJokeData()
         adapter.setNewData(data)
     }
