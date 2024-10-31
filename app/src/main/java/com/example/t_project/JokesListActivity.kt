@@ -1,28 +1,32 @@
 package com.example.t_project
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.t_project.data.JokeGenerator
-import com.example.t_project.databinding.ActivityMainBinding
+import com.example.t_project.databinding.ActivityJokesListBinding
 import com.example.t_project.recycler.JokeAdapter
 
-class MainActivity : AppCompatActivity() {
+class JokesListActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding
-    private val adapter = JokeAdapter()
-    private val generator = JokeGenerator()
+    private lateinit var binding: ActivityJokesListBinding
+    private val adapter = JokeAdapter {
+        this.startActivity(JokeDetailsActivity.getInstance(this, it))
+    }
+    private val generator = JokeGenerator
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityJokesListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         createRecycleView()
         generateData()
+
     }
     private fun createRecycleView() {
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = GridLayoutManager(this, 1)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
     }
     private fun generateData() {
         val data = generator.generateJokeData()

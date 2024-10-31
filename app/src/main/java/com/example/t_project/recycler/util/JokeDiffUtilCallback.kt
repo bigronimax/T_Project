@@ -25,12 +25,12 @@ class JokeDiffUtilCallback(
 
         return when {
             oldItem.category != newItem.category -> JokeCategoryPayload(newItem.category)
-            oldItem.question != newItem.question -> JokeQuestionPayload(newItem.question)
-            oldItem.answer != newItem.answer -> JokeAnswerPayload(newItem.answer)
+            oldItem.questionCard != newItem.questionCard -> JokeQuestionPayload(newItem.questionCard)
+            oldItem.answerCard != newItem.answerCard -> JokeAnswerPayload(newItem.answerCard)
             else -> null
         }
     }
     data class JokeCategoryPayload(val category: String)
-    data class JokeQuestionPayload(val question: String)
-    data class JokeAnswerPayload(val answer: String)
+    data class JokeQuestionPayload(val questionCard: String)
+    data class JokeAnswerPayload(val answerCard: String)
 }
