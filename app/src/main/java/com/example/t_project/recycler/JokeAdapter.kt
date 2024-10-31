@@ -1,9 +1,7 @@
 package com.example.t_project.recycler
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.t_project.data.Joke
@@ -59,7 +57,6 @@ class JokeAdapter(
 
     private fun handleJokeClick(position: Int) {
         if (position != RecyclerView.NO_POSITION) {
-            val item = data[position]
             clickListener(position)
         }
 
