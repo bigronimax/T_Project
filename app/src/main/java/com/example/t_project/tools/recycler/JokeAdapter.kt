@@ -1,12 +1,12 @@
-package com.example.t_project.recycler
+package com.example.t_project.tools.recycler
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.t_project.data.Joke
+import com.example.t_project.domain.models.Joke
 import com.example.t_project.databinding.JokeItemBinding
-import com.example.t_project.recycler.util.JokeDiffUtilCallback
+import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback
 
 class JokeAdapter(
     private val clickListener: (Int) -> Unit
@@ -26,7 +26,8 @@ class JokeAdapter(
 
         return JokeViewHolder(binding).apply {
             binding.root.setOnClickListener {
-                handleJokeClick(adapterPosition)
+                if (adapterPosition != RecyclerView.NO_POSITION)
+                    handleJokeClick(data[adapterPosition].id)
             }
         }
     }
@@ -48,18 +49,15 @@ class JokeAdapter(
            payloads.forEach {
                when (it) {
                    is JokeDiffUtilCallback.JokeCategoryPayload -> holder.bindCategory(it.category)
-                   is JokeDiffUtilCallback.JokeQuestionPayload -> holder.bindQuestion(it.questionCard)
-                   is JokeDiffUtilCallback.JokeAnswerPayload -> holder.bindAnswer(it.answerCard)
+                   is JokeDiffUtilCallback.JokeQuestionPayload -> holder.bindQuestion(it.question)
+                   is JokeDiffUtilCallback.JokeAnswerPayload -> holder.bindAnswer(it.answer)
                }
            }
        }
     }
 
-    private fun handleJokeClick(position: Int) {
-        if (position != RecyclerView.NO_POSITION) {
-            clickListener(position)
-        }
-
+    private fun handleJokeClick(jokeId: Int) {
+            clickListener(jokeId)
     }
 
 }

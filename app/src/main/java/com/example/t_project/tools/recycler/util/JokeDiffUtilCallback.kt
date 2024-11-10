@@ -1,7 +1,7 @@
-package com.example.t_project.recycler.util
+package com.example.t_project.tools.recycler.util
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.t_project.data.Joke
+import com.example.t_project.domain.models.Joke
 
 class JokeDiffUtilCallback(
     private val oldList: List<Joke>,
@@ -25,12 +25,12 @@ class JokeDiffUtilCallback(
 
         return when {
             oldItem.category != newItem.category -> JokeCategoryPayload(newItem.category)
-            oldItem.questionCard != newItem.questionCard -> JokeQuestionPayload(newItem.questionCard)
-            oldItem.answerCard != newItem.answerCard -> JokeAnswerPayload(newItem.answerCard)
+            oldItem.question != newItem.question -> JokeQuestionPayload(newItem.question)
+            oldItem.answer != newItem.answer -> JokeAnswerPayload(newItem.answer)
             else -> null
         }
     }
     data class JokeCategoryPayload(val category: String)
-    data class JokeQuestionPayload(val questionCard: String)
-    data class JokeAnswerPayload(val answerCard: String)
+    data class JokeQuestionPayload(val question: String)
+    data class JokeAnswerPayload(val answer: String)
 }
