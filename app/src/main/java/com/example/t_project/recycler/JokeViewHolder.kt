@@ -8,8 +8,8 @@ class JokeViewHolder(private val binding: JokeItemBinding): RecyclerView.ViewHol
 
     fun bind(joke: Joke) {
         bindCategory(joke.category)
-        bindQuestion(joke.question)
-        bindAnswer(joke.answer)
+        bindQuestion(joke.questionCard)
+        bindAnswer(joke.answerCard)
     }
     fun bindCategory(category: String) {
         binding.category.text = category

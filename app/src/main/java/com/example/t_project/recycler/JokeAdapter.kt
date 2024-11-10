@@ -1,16 +1,16 @@
 package com.example.t_project.recycler
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.t_project.data.Joke
 import com.example.t_project.databinding.JokeItemBinding
 import com.example.t_project.recycler.util.JokeDiffUtilCallback
 
-class JokeAdapter: RecyclerView.Adapter<JokeViewHolder>() {
+class JokeAdapter(
+    private val clickListener: (Int) -> Unit
+): RecyclerView.Adapter<JokeViewHolder>() {
 
     private var data = emptyList<Joke>()
 
@@ -22,11 +22,11 @@ class JokeAdapter: RecyclerView.Adapter<JokeViewHolder>() {
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JokeViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val binding = JokeItemBinding.inflate(inflater)
+        val binding = JokeItemBinding.inflate(inflater, parent, false)
 
         return JokeViewHolder(binding).apply {
             binding.root.setOnClickListener {
-                handleJokeClick(parent.context, adapterPosition)
+                handleJokeClick(adapterPosition)
             }
         }
     }
@@ -48,17 +48,16 @@ class JokeAdapter: RecyclerView.Adapter<JokeViewHolder>() {
            payloads.forEach {
                when (it) {
                    is JokeDiffUtilCallback.JokeCategoryPayload -> holder.bindCategory(it.category)
-                   is JokeDiffUtilCallback.JokeQuestionPayload -> holder.bindQuestion(it.question)
-                   is JokeDiffUtilCallback.JokeAnswerPayload -> holder.bindAnswer(it.answer)
+                   is JokeDiffUtilCallback.JokeQuestionPayload -> holder.bindQuestion(it.questionCard)
+                   is JokeDiffUtilCallback.JokeAnswerPayload -> holder.bindAnswer(it.answerCard)
                }
            }
        }
     }
 
-    private fun handleJokeClick(context: Context, position: Int) {
+    private fun handleJokeClick(position: Int) {
         if (position != RecyclerView.NO_POSITION) {
-            val item = data[position]
-            Toast.makeText(context, item.answer, Toast.LENGTH_SHORT).show()
+            clickListener(position)
         }
 
     }
