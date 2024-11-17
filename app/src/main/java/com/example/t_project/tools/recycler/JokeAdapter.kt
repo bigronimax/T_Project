@@ -18,6 +18,7 @@ class JokeAdapter(
         val diffUtilCallback = JokeDiffUtilCallback(data, newData)
         val calculatedDiff = DiffUtil.calculateDiff(diffUtilCallback)
         data = newData
+        notifyDataSetChanged()
         calculatedDiff.dispatchUpdatesTo(this)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JokeViewHolder {

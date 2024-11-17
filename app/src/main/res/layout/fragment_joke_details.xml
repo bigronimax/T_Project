@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/blueBlack"
     android:padding="20dp"
-    tools:context=".ui.jokesList.JokeDetailsFragment">
+    tools:context=".ui.jokeDetails.JokeDetailsFragment">
 
     <TextView
         android:id="@+id/question"
