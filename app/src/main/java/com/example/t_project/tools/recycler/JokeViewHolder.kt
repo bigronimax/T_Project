@@ -1,15 +1,15 @@
-package com.example.t_project.recycler
+package com.example.t_project.tools.recycler
 
 import androidx.recyclerview.widget.RecyclerView
-import com.example.t_project.data.Joke
+import com.example.t_project.domain.models.Joke
 import com.example.t_project.databinding.JokeItemBinding
 
 class JokeViewHolder(private val binding: JokeItemBinding): RecyclerView.ViewHolder(binding.root) {
 
     fun bind(joke: Joke) {
         bindCategory(joke.category)
-        bindQuestion(joke.questionCard)
-        bindAnswer(joke.answerCard)
+        bindQuestion(joke.question)
+        bindAnswer(joke.answer)
     }
     fun bindCategory(category: String) {
         binding.category.text = category
