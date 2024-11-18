@@ -22,8 +22,6 @@ class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
 
     private lateinit var viewModel: JokeCreateViewModel
 
-    private var jokeLastId: Int = -1
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -31,7 +29,7 @@ class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
     ): View? {
         viewModel = ViewModelProvider(
             this,
-            JokeCreateViewModel.provideFactory(requireContext())
+            JokeCreateViewModel.provideFactory()
         )[JokeCreateViewModel::class.java]
 
         return super.onCreateView(inflater, container, savedInstanceState)
@@ -39,27 +37,22 @@ class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        jokeLastId = arguments?.getInt(JokeListFragment.JOKE_LAST_ID_KEY)!!
 
-        if (jokeLastId == -1) {
-            handleError()
-        } else {
-            binding.save.setOnClickListener {
-                lifecycleScope.launch {
-                    viewModel.setNewJoke(
-                        Joke(
-                            id = jokeLastId,
-                            question = binding.question.text.toString(),
-                            answer = binding.answer.text.toString(),
-                            category = binding.category.text.toString(),
+        binding.save.setOnClickListener {
+            lifecycleScope.launch {
+                viewModel.addNewJoke(
+                    Joke(
+                        id = viewModel.getJokesSize(),
+                        question = binding.question.text.toString(),
+                        answer = binding.answer.text.toString(),
+                        category = binding.category.text.toString(),
 
-                            )
-                    )
-                    parentFragmentManager.popBackStack()
-                }
+                        )
+                )
+                parentFragmentManager.popBackStack()
             }
-
         }
+
     }
 
     private fun handleError() {

@@ -1,12 +1,16 @@
 package com.example.t_project.tools.recycler
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.t_project.domain.models.Joke
 import com.example.t_project.databinding.JokeItemBinding
+import com.example.t_project.domain.models.Joke
 import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback
+import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback.Companion.ANSWER_KEY
+import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback.Companion.CATEGORY_KEY
+import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback.Companion.QUESTION_KEY
 
 class JokeAdapter(
     private val clickListener: (Int) -> Unit
@@ -18,7 +22,6 @@ class JokeAdapter(
         val diffUtilCallback = JokeDiffUtilCallback(data, newData)
         val calculatedDiff = DiffUtil.calculateDiff(diffUtilCallback)
         data = newData
-        notifyDataSetChanged()
         calculatedDiff.dispatchUpdatesTo(this)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JokeViewHolder {
@@ -47,13 +50,17 @@ class JokeAdapter(
        if (payloads.isEmpty()) {
            onBindViewHolder(holder, position)
        } else {
-           payloads.forEach {
-               when (it) {
-                   is JokeDiffUtilCallback.JokeCategoryPayload -> holder.bindCategory(it.category)
-                   is JokeDiffUtilCallback.JokeQuestionPayload -> holder.bindQuestion(it.question)
-                   is JokeDiffUtilCallback.JokeAnswerPayload -> holder.bindAnswer(it.answer)
+
+           val bundle = payloads[0] as Bundle
+
+           for (key in bundle.keySet()) {
+               when {
+                   key.equals(CATEGORY_KEY) -> bundle.getString(key)?.let { holder.bindCategory(it) }
+                   key.equals(QUESTION_KEY) -> bundle.getString(key)?.let { holder.bindQuestion(it) }
+                   key.equals(ANSWER_KEY) -> bundle.getString(key)?.let { holder.bindAnswer(it) }
                }
            }
+
        }
     }
 

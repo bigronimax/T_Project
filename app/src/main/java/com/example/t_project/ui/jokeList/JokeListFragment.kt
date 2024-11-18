@@ -1,14 +1,12 @@
 package com.example.t_project.ui.jokeList
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.t_project.R
@@ -16,16 +14,11 @@ import com.example.t_project.databinding.FragmentJokeListBinding
 import com.example.t_project.tools.recycler.JokeAdapter
 import com.example.t_project.ui.jokeCreate.JokeCreateFragment
 import com.example.t_project.ui.jokeDetails.JokeDetailsFragment
-import kotlinx.coroutines.Delay
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
 
     companion object {
-        const val JOKE_ITEM_ID_KEY = "bundleKey"
-        const val JOKE_LAST_ID_KEY = "bundleKey"
+        const val JOKE_ITEM_ID_KEY = "itemIdKey"
     }
 
     private val binding: FragmentJokeListBinding by viewBinding(FragmentJokeListBinding::bind)
@@ -53,7 +46,7 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(this, JokeListViewModel.provideFactory(requireContext()))
+        viewModel = ViewModelProvider(this, JokeListViewModel.provideFactory())
             .get(JokeListViewModel::class.java)
         return super.onCreateView(inflater, container, savedInstanceState)
     }
@@ -72,24 +65,20 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
     }
     private fun loadData() {
 
-        lifecycleScope.launch {
-            viewModel.loadJokes()
-        }
+        viewModel.loadJokes()
 
-        viewModel.mutableJokes.observe(viewLifecycleOwner) { jokes ->
+        viewModel.jokesLiveData.observe(viewLifecycleOwner) { jokes ->
+            binding.empty.visibility =
+                if (jokes.isEmpty()) View.VISIBLE else View.GONE
+            binding.recyclerView.visibility =
+                if (jokes.isEmpty()) View.GONE else View.VISIBLE
+
             adapter.setNewData(jokes)
         }
 
-        viewModel.mutableProgress.observe(viewLifecycleOwner){ isVisible ->
+        viewModel.progressLiveData.observe(viewLifecycleOwner){ isVisible ->
             binding.progress.visibility =
                 if (isVisible) ProgressBar.VISIBLE else ProgressBar.GONE
-        }
-
-        viewModel.mutableEmpty.observe(viewLifecycleOwner) { isEmpty ->
-            binding.empty.visibility =
-                if (isEmpty) View.VISIBLE else View.GONE
-            binding.recyclerView.visibility =
-                if (isEmpty) View.GONE else View.VISIBLE
         }
 
     }
@@ -98,11 +87,6 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
         binding.create.setOnClickListener {
 
             val fragment = JokeCreateFragment()
-
-            val args = Bundle()
-//            viewModel.jokesStateFlow.value?.let { it1 -> args.putInt(JOKE_LAST_ID_KEY, it1.size) }
-            viewModel.mutableJokes.value?.let {it1 -> args.putInt(JOKE_LAST_ID_KEY, it1.size) }
-            fragment.setArguments(args)
 
             requireActivity().supportFragmentManager
                 .beginTransaction()

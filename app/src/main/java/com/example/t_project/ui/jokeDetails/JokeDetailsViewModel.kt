@@ -1,6 +1,7 @@
 package com.example.t_project.ui.jokeDetails
 
 import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
@@ -15,12 +16,18 @@ class JokeDetailsViewModel(
 ): ViewModel() {
     private val getJokesUseCase by lazy { GetJokesUseCase(jokesGenerationRepository = generationRepository) }
 
-    suspend fun getJokeItem(jokeId: Int) : Joke {
-        return getJokesUseCase.execute()[jokeId]
+    suspend fun getJokeItem(jokeId: Int, context: Context) : Joke? {
+        return if (jokeId == -1) {
+            Toast.makeText(context, "Invalid joke data!", Toast.LENGTH_SHORT).show()
+            null
+        } else {
+            getJokesUseCase.execute(false)[jokeId]
+        }
     }
 
+
     companion object {
-        fun provideFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
+        fun provideFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 JokeDetailsViewModel(
                     generationRepository = JokesGenerationRepositoryImpl,

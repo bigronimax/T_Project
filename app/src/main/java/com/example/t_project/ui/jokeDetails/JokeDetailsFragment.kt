@@ -21,8 +21,6 @@ class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
 
     private lateinit var viewModel: JokeDetailsViewModel
 
-    private var jokeId: Int = -1
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -30,25 +28,22 @@ class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
     ): View? {
         viewModel = ViewModelProvider(
             this,
-            JokeDetailsViewModel.provideFactory(requireContext())
+            JokeDetailsViewModel.provideFactory()
         )[JokeDetailsViewModel::class.java]
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        var jokeId: Int = -1
         jokeId = arguments?.getInt(JOKE_ITEM_ID_KEY)!!
-        
         handleExtra(jokeId)
     }
 
     private fun handleExtra(jokeId: Int) {
-        if (jokeId == -1) {
-            handleError()
-        } else {
-            lifecycleScope.launch {
-                setupJokeData(viewModel.getJokeItem(jokeId))
-            }
+        lifecycleScope.launch {
+            viewModel.getJokeItem(jokeId, requireContext())?.let { setupJokeData(it) }
         }
     }
     private fun setupJokeData(item: Joke) {
@@ -58,8 +53,5 @@ class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
             category.text = item.category
         }
     }
-    private fun handleError() {
-        Toast.makeText(activity, "Invalid joke data!", Toast.LENGTH_SHORT).show()
-        requireActivity().finish()
-    }
+
 }

@@ -5,8 +5,8 @@ import com.example.t_project.domain.repos.JokesGenerationRepository
 
 class GetJokesUseCase(private val jokesGenerationRepository: JokesGenerationRepository) {
 
-    suspend fun execute(): List<Joke> {
-        return jokesGenerationRepository.getJokeData()
+    suspend fun execute(delay: Boolean): List<Joke> {
+        return jokesGenerationRepository.getJokeData(delay)
     }
 
 }

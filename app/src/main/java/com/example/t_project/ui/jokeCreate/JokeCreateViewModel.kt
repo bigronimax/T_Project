@@ -1,6 +1,5 @@
 package com.example.t_project.ui.jokeCreate
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
@@ -8,20 +7,24 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.t_project.domain.models.Joke
 import com.example.t_project.domain.repos.JokesGenerationRepository
 import com.example.t_project.domain.reposImpl.JokesGenerationRepositoryImpl
+import com.example.t_project.domain.usecases.AddNewJokeUseCase
 import com.example.t_project.domain.usecases.GetJokesUseCase
-import com.example.t_project.domain.usecases.SetNewJokeUseCase
-import com.example.t_project.ui.jokeDetails.JokeDetailsViewModel
 
 class JokeCreateViewModel(
     private val generationRepository: JokesGenerationRepository
 ): ViewModel() {
-    private val setJokeUseCase by lazy { SetNewJokeUseCase(jokesGenerationRepository = generationRepository) }
+    private val addJokeUseCase by lazy { AddNewJokeUseCase(jokesGenerationRepository = generationRepository) }
+    private val getJokesUseCase by lazy { GetJokesUseCase(jokesGenerationRepository = generationRepository) }
 
-    suspend fun setNewJoke(joke: Joke) {
-        return setJokeUseCase.execute(joke)
+    suspend fun addNewJoke(joke: Joke) {
+        return addJokeUseCase.execute(joke)
+    }
+
+    suspend fun getJokesSize(): Int {
+        return getJokesUseCase.execute(false).size
     }
     companion object {
-        fun provideFactory(context: Context): ViewModelProvider.Factory = viewModelFactory {
+        fun provideFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 JokeCreateViewModel(
                     generationRepository = JokesGenerationRepositoryImpl,
