@@ -7,51 +7,64 @@ import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.t_project.domain.models.Joke
-import com.example.t_project.domain.repos.JokesGenerationRepository
-import com.example.t_project.domain.reposImpl.JokesGenerationRepositoryImpl
-import com.example.t_project.domain.usecases.CheckNewJokesUseCase
-import com.example.t_project.domain.usecases.GenerateJokesUseCase
-import com.example.t_project.domain.usecases.GetJokesUseCase
+import com.example.t_project.domain.repos.JokesRepository
+import com.example.t_project.domain.reposImpl.JokesRepositoryImpl
+import com.example.t_project.domain.usecases.generationRepository.GetRemoteJokesUseCase
+import com.example.t_project.domain.usecases.generationRepository.GenerateJokesUseCase
+import com.example.t_project.domain.usecases.generationRepository.GetLocalJokesUseCase
+import com.example.t_project.domain.usecases.generationRepository.LoadRemoteJokesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class JokeListViewModel(
-    private val generationRepository: JokesGenerationRepository,
+    private val jokesRepository: JokesRepository,
 ): ViewModel() {
-    private val generateJokesUseCase by lazy { GenerateJokesUseCase(jokesGenerationRepository = generationRepository)}
-    private val getJokesUseCase by lazy { GetJokesUseCase(jokesGenerationRepository = generationRepository) }
-    private val checkNewJokesUseCase by lazy { CheckNewJokesUseCase(jokesGenerationRepository = generationRepository) }
 
-//    val jokesStateFlow: MutableStateFlow<List<Joke>?> = MutableStateFlow(null)
-//    val progressStateFlow: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val generateJokesUseCase by lazy { GenerateJokesUseCase(jokesRepository = jokesRepository) }
+    private val getLocalJokesUseCase by lazy { GetLocalJokesUseCase(jokesRepository = jokesRepository) }
+
+    private val loadRemoteJokesUseCase by lazy { LoadRemoteJokesUseCase(jokesRepository = jokesRepository) }
+    private val getRemoteJokesUseCase by lazy { GetRemoteJokesUseCase(jokesRepository = jokesRepository) }
 
     val jokesLiveData = MutableLiveData<List<Joke>>()
     val progressLiveData = MutableLiveData<Boolean>()
 
+    private var localJokes = listOf<Joke>()
+    private var remoteJokes = listOf<Joke>()
+
     init {
         progressLiveData.postValue(false)
+        loadRemoteJokes()
     }
-    fun loadJokes() {
+
+    private fun postJokes() {
+        jokesLiveData.postValue(localJokes + remoteJokes)
+    }
+
+    fun loadLocalJokes() {
         viewModelScope.launch(Dispatchers.IO) {
-            if (checkNewJokesUseCase.execute()) {
-                progressLiveData.postValue(true)
-                val jokesList = getJokesUseCase.execute(true)
-                jokesLiveData.postValue(jokesList)
-                progressLiveData.postValue(false)
-            }
+            progressLiveData.postValue(true)
+            localJokes = getLocalJokesUseCase.execute(true)
+            progressLiveData.postValue(false)
+            postJokes()
         }
     }
 
-//    fun refreshPage(adapter: JokeAdapter) {
-//        loadJokes()
-//        jokesStateFlow.value?.let { adapter.setNewData(it) }
-//    }
+    fun loadRemoteJokes() {
+        viewModelScope.launch(Dispatchers.IO) {
+            progressLiveData.postValue(true)
+            loadRemoteJokesUseCase.execute()
+            remoteJokes = getRemoteJokesUseCase.execute(delay=true)
+            progressLiveData.postValue(false)
+            postJokes()
+        }
+    }
 
     companion object {
         fun provideFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 JokeListViewModel(
-                    generationRepository = JokesGenerationRepositoryImpl
+                    jokesRepository = JokesRepositoryImpl,
                 )
             }
         }

@@ -1,7 +1,6 @@
 package com.example.t_project.ui.jokeCreate
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,8 +12,8 @@ import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.t_project.R
 import com.example.t_project.databinding.FragmentJokeCreateBinding
 import com.example.t_project.domain.models.Joke
-import com.example.t_project.ui.jokeList.JokeListFragment
 import kotlinx.coroutines.launch
+import java.util.UUID
 
 class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
 
@@ -42,11 +41,10 @@ class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
             lifecycleScope.launch {
                 viewModel.addNewJoke(
                     Joke(
-                        id = viewModel.getJokesSize(),
+                        id = UUID.randomUUID().toString(),
                         question = binding.question.text.toString(),
                         answer = binding.answer.text.toString(),
                         category = binding.category.text.toString(),
-
                         )
                 )
                 parentFragmentManager.popBackStack()

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -36,14 +35,15 @@ class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var jokeId: Int = -1
-        jokeId = arguments?.getInt(JOKE_ITEM_ID_KEY)!!
+        var jokeId: String = "-1"
+        jokeId = arguments?.getString(JOKE_ITEM_ID_KEY)!!
         handleExtra(jokeId)
     }
 
-    private fun handleExtra(jokeId: Int) {
+    private fun handleExtra(jokeId: String) {
         lifecycleScope.launch {
             viewModel.getJokeItem(jokeId, requireContext())?.let { setupJokeData(it) }
+            viewModel.getBackgroundColor(jokeId)?.let { binding.root.setBackgroundColor(it) }
         }
     }
     private fun setupJokeData(item: Joke) {

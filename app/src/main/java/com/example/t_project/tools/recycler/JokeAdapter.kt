@@ -13,7 +13,7 @@ import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback.Companion.
 import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback.Companion.QUESTION_KEY
 
 class JokeAdapter(
-    private val clickListener: (Int) -> Unit
+    private val clickListener: (String) -> Unit
 ): RecyclerView.Adapter<JokeViewHolder>() {
 
     private var data = emptyList<Joke>()
@@ -64,7 +64,7 @@ class JokeAdapter(
        }
     }
 
-    private fun handleJokeClick(jokeId: Int) {
+    private fun handleJokeClick(jokeId: String) {
             clickListener(jokeId)
     }
 
