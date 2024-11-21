@@ -51,7 +51,13 @@ object JokesRepositoryImpl : JokesRepository {
         return jokesDataMap
     }
 
-    override suspend fun addNewJoke(joke: Joke) {
+    override suspend fun addNewJoke(question: String, answer: String, category: String) {
+        val joke = Joke(
+            id = UUID.randomUUID().toString(),
+            question = question,
+            answer = answer,
+            category = category
+        )
         localJokesData.add(joke)
     }
 

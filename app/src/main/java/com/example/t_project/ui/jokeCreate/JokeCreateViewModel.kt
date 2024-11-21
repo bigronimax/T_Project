@@ -15,8 +15,8 @@ class JokeCreateViewModel(
 ): ViewModel() {
     private val addJokeUseCase by lazy { AddNewJokeUseCase(jokesRepository = generationRepository) }
 
-    suspend fun addNewJoke(joke: Joke) {
-        return addJokeUseCase.execute(joke)
+    suspend fun addNewJoke(question: String, answer: String, category: String) {
+        return addJokeUseCase.execute(question, answer, category)
     }
     companion object {
         fun provideFactory(): ViewModelProvider.Factory = viewModelFactory {
