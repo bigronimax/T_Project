@@ -37,13 +37,21 @@ class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
 
         var jokeId: String = "-1"
         jokeId = arguments?.getString(JOKE_ITEM_ID_KEY)!!
-        handleExtra(jokeId)
+        setupJoke(jokeId)
     }
 
-    private fun handleExtra(jokeId: String) {
-        lifecycleScope.launch {
-            viewModel.getJokeItem(jokeId, requireContext())?.let { setupJokeData(it) }
-            viewModel.getBackgroundColor(jokeId)?.let { binding.root.setBackgroundColor(it) }
+    private fun setupJoke(jokeId: String) {
+        viewModel.getJokeItem(jokeId, requireContext())
+        viewModel.getBackgroundColor(jokeId, requireContext())
+
+        viewModel.colorLiveData.observe(viewLifecycleOwner) { color ->
+            if (color != null) {
+                binding.root.setBackgroundColor(color)
+            }
+        }
+
+        viewModel.jokesLiveData.observe(viewLifecycleOwner) { joke ->
+            setupJokeData(joke)
         }
     }
     private fun setupJokeData(item: Joke) {

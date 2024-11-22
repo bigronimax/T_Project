@@ -38,14 +38,12 @@ class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
         super.onViewCreated(view, savedInstanceState)
 
         binding.save.setOnClickListener {
-            lifecycleScope.launch {
-                viewModel.addNewJoke(
-                    question = binding.question.text.toString(),
-                    answer = binding.answer.text.toString(),
-                    category = binding.category.text.toString(),
-                )
-                parentFragmentManager.popBackStack()
-            }
+            viewModel.addNewJoke(
+                question = binding.question.text.toString(),
+                answer = binding.answer.text.toString(),
+                category = binding.category.text.toString(),
+            )
+            parentFragmentManager.popBackStack()
         }
 
     }
