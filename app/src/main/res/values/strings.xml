@@ -3,4 +3,10 @@
     <string name="category_name">(Christmas)</string>
     <string name="question_text">What does Santa suffer from if he gets stuck in a chimney?</string>
     <string name="answer_text">- Claustrophobia!</string>
+    <string name="question_placeholder">Question</string>
+    <string name="answer_placeholder">Answer</string>
+    <string name="category_placeholder">Category</string>
+    <string name="save">Save</string>
+    <string name="create">Create</string>
+    <string name="empty_list">Шутки вышли из чата, добавьте новую!</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.t_project.tools.recycler.util
 
+import android.os.Bundle
 import androidx.recyclerview.widget.DiffUtil
 import com.example.t_project.domain.models.Joke
 
@@ -7,6 +8,12 @@ class JokeDiffUtilCallback(
     private val oldList: List<Joke>,
     private val newList: List<Joke>
 ): DiffUtil.Callback() {
+
+    companion object {
+        const val CATEGORY_KEY = "categoryKey"
+        const val QUESTION_KEY = "questionKey"
+        const val ANSWER_KEY = "answerKey"
+    }
     override fun getOldListSize() = oldList.size
 
     override fun getNewListSize() = newList.size
@@ -23,14 +30,14 @@ class JokeDiffUtilCallback(
         val oldItem = oldList[oldItemPosition]
         val newItem = newList[newItemPosition]
 
-        return when {
-            oldItem.category != newItem.category -> JokeCategoryPayload(newItem.category)
-            oldItem.question != newItem.question -> JokeQuestionPayload(newItem.question)
-            oldItem.answer != newItem.answer -> JokeAnswerPayload(newItem.answer)
-            else -> null
+        val bundle = Bundle()
+
+        when {
+            oldItem.category != newItem.category -> bundle.putString(CATEGORY_KEY, newItem.category)
+            oldItem.question != newItem.question -> bundle.putString(QUESTION_KEY, newItem.question)
+            oldItem.answer != newItem.answer -> bundle.putString(ANSWER_KEY, newItem.answer)
+            else -> return null
         }
+        return bundle
     }
-    data class JokeCategoryPayload(val category: String)
-    data class JokeQuestionPayload(val question: String)
-    data class JokeAnswerPayload(val answer: String)
 }
