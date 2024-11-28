@@ -35,26 +35,23 @@ class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var jokeId: String = "-1"
-        jokeId = arguments?.getString(JOKE_ITEM_ID_KEY)!!
+        val jokeId = arguments?.getString(JOKE_ITEM_ID_KEY)
         setupJoke(jokeId)
     }
 
-    private fun setupJoke(jokeId: String) {
+    private fun setupJoke(jokeId: String?) {
+
         viewModel.getJokeItem(jokeId, requireContext())
-        viewModel.getBackgroundColor(jokeId, requireContext())
 
         viewModel.colorLiveData.observe(viewLifecycleOwner) { color ->
-            if (color != null) {
-                binding.root.setBackgroundColor(color)
-            }
+            binding.root.setBackgroundColor(color)
         }
 
         viewModel.jokesLiveData.observe(viewLifecycleOwner) { joke ->
-            setupJokeData(joke)
+            setupJokeUI(joke)
         }
     }
-    private fun setupJokeData(item: Joke) {
+    private fun setupJokeUI(item: Joke) {
         with(binding) {
             question.text = item.question
             answer.text = item.answer

@@ -10,5 +10,5 @@ data class JokesResponse(
     @SerialName("amount")
     val amount: Int,
     @SerialName("jokes")
-    val jokes: List<Data>,
+    val jokes: List<ResponseData>,
 )

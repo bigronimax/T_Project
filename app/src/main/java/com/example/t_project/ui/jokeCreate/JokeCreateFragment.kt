@@ -42,15 +42,11 @@ class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
                 question = binding.question.text.toString(),
                 answer = binding.answer.text.toString(),
                 category = binding.category.text.toString(),
+                source = Joke.SourceEnum.LOCAL,
             )
             parentFragmentManager.popBackStack()
         }
 
-    }
-
-    private fun handleError() {
-        Toast.makeText(activity, "Invalid id data!", Toast.LENGTH_SHORT).show()
-        requireActivity().finish()
     }
 
 }

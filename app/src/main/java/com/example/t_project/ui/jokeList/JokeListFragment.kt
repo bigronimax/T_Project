@@ -27,6 +27,8 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
 
     private lateinit var viewModel: JokeListViewModel
 
+    private var isLoading = false;
+
     private val adapter = JokeAdapter {
 
         val fragment = JokeDetailsFragment()
@@ -67,8 +69,8 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
 
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if (!recyclerView.canScrollVertically(1)) {
-                    viewModel.loadRemoteJokes()
+                if (!recyclerView.canScrollVertically(1) && !isLoading) {
+                    viewModel.loadJokes()
                 }
             }
         })
@@ -76,7 +78,7 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
     }
     private fun loadData() {
 
-        viewModel.loadLocalJokes()
+        viewModel.loadJokes(false)
 
         viewModel.jokesLiveData.observe(viewLifecycleOwner) { jokes ->
             binding.empty.visibility =
@@ -87,9 +89,10 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
             adapter.setNewData(jokes)
         }
 
-        viewModel.progressLiveData.observe(viewLifecycleOwner){ isVisible ->
+        viewModel.progressLiveData.observe(viewLifecycleOwner){ loading ->
+            isLoading = loading
             binding.progress.visibility =
-                if (isVisible) ProgressBar.VISIBLE else ProgressBar.GONE
+                if (isLoading) ProgressBar.VISIBLE else ProgressBar.GONE
         }
 
     }

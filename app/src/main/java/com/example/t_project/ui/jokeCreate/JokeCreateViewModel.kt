@@ -9,7 +9,6 @@ import com.example.t_project.domain.models.Joke
 import com.example.t_project.domain.repos.JokesRepository
 import com.example.t_project.domain.reposImpl.JokesRepositoryImpl
 import com.example.t_project.domain.usecases.generationRepository.AddNewJokeUseCase
-import com.example.t_project.domain.usecases.generationRepository.GetLocalJokesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -18,9 +17,9 @@ class JokeCreateViewModel(
 ): ViewModel() {
     private val addJokeUseCase by lazy { AddNewJokeUseCase(jokesRepository = generationRepository) }
 
-    fun addNewJoke(question: String, answer: String, category: String) {
+    fun addNewJoke(question: String, answer: String, category: String, source: Joke.SourceEnum) {
         viewModelScope.launch(Dispatchers.IO) {
-            addJokeUseCase.execute(question, answer, category)
+            addJokeUseCase.execute(question, answer, category, source)
         }
     }
     companion object {

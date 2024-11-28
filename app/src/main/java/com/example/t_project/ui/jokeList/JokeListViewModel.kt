@@ -9,10 +9,7 @@ import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.t_project.domain.models.Joke
 import com.example.t_project.domain.repos.JokesRepository
 import com.example.t_project.domain.reposImpl.JokesRepositoryImpl
-import com.example.t_project.domain.usecases.generationRepository.GetRemoteJokesUseCase
-import com.example.t_project.domain.usecases.generationRepository.GenerateJokesUseCase
-import com.example.t_project.domain.usecases.generationRepository.GetLocalJokesUseCase
-import com.example.t_project.domain.usecases.generationRepository.LoadRemoteJokesUseCase
+import com.example.t_project.domain.usecases.generationRepository.LoadJokesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -20,43 +17,21 @@ class JokeListViewModel(
     private val jokesRepository: JokesRepository,
 ): ViewModel() {
 
-    private val generateJokesUseCase by lazy { GenerateJokesUseCase(jokesRepository = jokesRepository) }
-    private val getLocalJokesUseCase by lazy { GetLocalJokesUseCase(jokesRepository = jokesRepository) }
-
-    private val loadRemoteJokesUseCase by lazy { LoadRemoteJokesUseCase(jokesRepository = jokesRepository) }
-    private val getRemoteJokesUseCase by lazy { GetRemoteJokesUseCase(jokesRepository = jokesRepository) }
+    private val loadJokesUseCase by lazy { LoadJokesUseCase(jokesRepository = jokesRepository) }
 
     val jokesLiveData = MutableLiveData<List<Joke>>()
-    val progressLiveData = MutableLiveData<Boolean>()
-
-    private var localJokes = listOf<Joke>()
-    private var remoteJokes = listOf<Joke>()
+    val progressLiveData = MutableLiveData<Boolean>(false)
 
     init {
-        progressLiveData.postValue(false)
-        loadRemoteJokes()
+        loadJokes()
     }
 
-    private fun postJokes() {
-        jokesLiveData.postValue(localJokes + remoteJokes)
-    }
-
-    fun loadLocalJokes() {
+    fun loadJokes(remoteLoad: Boolean = true) {
         viewModelScope.launch(Dispatchers.IO) {
             progressLiveData.postValue(true)
-            localJokes = getLocalJokesUseCase.execute(true)
+            val jokes = loadJokesUseCase.execute(remoteLoad)
             progressLiveData.postValue(false)
-            postJokes()
-        }
-    }
-
-    fun loadRemoteJokes() {
-        viewModelScope.launch(Dispatchers.IO) {
-            progressLiveData.postValue(true)
-            loadRemoteJokesUseCase.execute()
-            remoteJokes = getRemoteJokesUseCase.execute(delay=true)
-            progressLiveData.postValue(false)
-            postJokes()
+            jokesLiveData.postValue(jokes)
         }
     }
 
