@@ -27,7 +27,7 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
 
     private lateinit var viewModel: JokeListViewModel
 
-    private var isLoading = false;
+    private var isLoading = false
 
     private val adapter = JokeAdapter {
 

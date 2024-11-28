@@ -3,7 +3,6 @@ package com.example.t_project.domain.reposImpl
 import com.example.t_project.domain.internet.ApiDataSource
 import com.example.t_project.domain.models.Joke
 import com.example.t_project.domain.repos.JokesRepository
-import java.util.Random
 import java.util.UUID
 
 object JokesRepositoryImpl : JokesRepository {
