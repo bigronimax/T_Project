@@ -13,6 +13,7 @@ class JokeDiffUtilCallback(
         const val CATEGORY_KEY = "categoryKey"
         const val QUESTION_KEY = "questionKey"
         const val ANSWER_KEY = "answerKey"
+        const val SOURCE_KEY = "sourceKey"
     }
     override fun getOldListSize() = oldList.size
 
@@ -31,11 +32,11 @@ class JokeDiffUtilCallback(
         val newItem = newList[newItemPosition]
 
         val bundle = Bundle()
-
         when {
             oldItem.category != newItem.category -> bundle.putString(CATEGORY_KEY, newItem.category)
             oldItem.question != newItem.question -> bundle.putString(QUESTION_KEY, newItem.question)
             oldItem.answer != newItem.answer -> bundle.putString(ANSWER_KEY, newItem.answer)
+            oldItem.source != newItem.source -> bundle.putInt(SOURCE_KEY, newItem.source.color)
             else -> return null
         }
         return bundle

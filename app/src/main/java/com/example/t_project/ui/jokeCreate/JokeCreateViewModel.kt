@@ -5,10 +5,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.t_project.domain.database.JokesDataBase
+import com.example.t_project.domain.internet.ApiDataSource
 import com.example.t_project.domain.models.Joke
+import com.example.t_project.domain.models.JokeMapper
 import com.example.t_project.domain.repos.JokesRepository
 import com.example.t_project.domain.reposImpl.JokesRepositoryImpl
-import com.example.t_project.domain.usecases.generationRepository.AddNewJokeUseCase
+import com.example.t_project.domain.usecases.jokesRepository.AddNewJokeUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -26,7 +29,11 @@ class JokeCreateViewModel(
         fun provideFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 JokeCreateViewModel(
-                    generationRepository = JokesRepositoryImpl,
+                    generationRepository = JokesRepositoryImpl(
+                        ApiDataSource(),
+                        JokesDataBase.INSTANCE.jokeDao(),
+                        JokeMapper()
+                    ),
                 )
             }
         }

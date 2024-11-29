@@ -1,10 +1,14 @@
 package com.example.t_project.ui.jokeList
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -70,7 +74,7 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 if (!recyclerView.canScrollVertically(1) && !isLoading) {
-                    viewModel.loadJokes()
+                    viewModel.loadJokes(true, checkForInternet(requireContext()))
                 }
             }
         })
@@ -78,15 +82,25 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
     }
     private fun loadData() {
 
-        viewModel.loadJokes(false)
+        viewModel.loadJokes(false, checkForInternet(requireContext()))
 
         viewModel.jokesLiveData.observe(viewLifecycleOwner) { jokes ->
+
             binding.empty.visibility =
                 if (jokes.isEmpty()) View.VISIBLE else View.GONE
             binding.recyclerView.visibility =
                 if (jokes.isEmpty()) View.GONE else View.VISIBLE
 
-            adapter.setNewData(jokes)
+            if (checkForInternet(requireContext())) {
+                adapter.setNewData(jokes)
+            }
+            else if (jokes.size > adapter.itemCount && !checkForInternet(requireContext())) {
+                adapter.setNewData(jokes)
+                Toast.makeText(context, "Загружены кэшированные шутки!", Toast.LENGTH_SHORT).show()
+            }
+            else if (jokes.size == adapter.itemCount && !checkForInternet(requireContext())) {
+                Toast.makeText(context, "Нет соединения с интернетом!", Toast.LENGTH_SHORT).show()
+            }
         }
 
         viewModel.progressLiveData.observe(viewLifecycleOwner){ loading ->
@@ -108,6 +122,20 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
                 .addToBackStack(null)
                 .commit()
         }
+    }
+    private fun checkForInternet(context: Context): Boolean {
+
+        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
+        val network = connectivityManager.activeNetwork ?: return false
+        val activeNetwork = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+        return when {
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+            activeNetwork.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+            else -> false
+        }
+
     }
 
 }

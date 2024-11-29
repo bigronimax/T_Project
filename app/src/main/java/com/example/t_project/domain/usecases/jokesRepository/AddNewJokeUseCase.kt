@@ -1,4 +1,4 @@
-package com.example.t_project.domain.usecases.generationRepository
+package com.example.t_project.domain.usecases.jokesRepository
 
 import com.example.t_project.domain.models.Joke
 import com.example.t_project.domain.repos.JokesRepository
