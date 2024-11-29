@@ -1,6 +1,5 @@
 package com.example.t_project.tools.recycler
 
-import android.graphics.Color
 import androidx.recyclerview.widget.RecyclerView
 import com.example.t_project.domain.models.Joke
 import com.example.t_project.databinding.JokeItemBinding

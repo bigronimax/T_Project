@@ -1,7 +1,6 @@
 package com.example.t_project.ui.jokeDetails
 
 import android.content.Context
-import android.graphics.Color
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

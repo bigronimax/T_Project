@@ -4,7 +4,6 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.t_project.domain.models.Joke
 import com.example.t_project.domain.models.database.LocalJoke
 import com.example.t_project.domain.models.database.RemoteJoke
 

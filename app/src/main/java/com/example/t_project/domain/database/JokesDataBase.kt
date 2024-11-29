@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.t_project.domain.models.Joke
 import com.example.t_project.domain.models.database.LocalJoke
 import com.example.t_project.domain.models.database.RemoteJoke
 
