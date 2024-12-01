@@ -9,5 +9,6 @@ interface Api {
     suspend fun getJokesList(
         @Query("amount") amount: Int = 10,
         @Query("type") type: String = "twopart",
+        @Query("blacklistFlags") blacklistFlags: String = listOf("nsfw", "religious", "political", "racist", "sexist", "explicit").joinToString(",")
     ): JokesResponse
 }
