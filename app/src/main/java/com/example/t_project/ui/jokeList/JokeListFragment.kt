@@ -8,12 +8,14 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.t_project.R
 import com.example.t_project.databinding.FragmentJokeListBinding
 import com.example.t_project.tools.recycler.JokeAdapter
 import com.example.t_project.ui.jokeCreate.JokeCreateFragment
 import com.example.t_project.ui.jokeDetails.JokeDetailsFragment
+
 
 class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
 
@@ -25,12 +27,14 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
 
     private lateinit var viewModel: JokeListViewModel
 
+    private var isLoading = false
+
     private val adapter = JokeAdapter {
 
         val fragment = JokeDetailsFragment()
 
         val args = Bundle()
-        args.putInt(JOKE_ITEM_ID_KEY, it)
+        args.putString(JOKE_ITEM_ID_KEY, it)
         fragment.setArguments(args)
 
         requireActivity().supportFragmentManager
@@ -62,10 +66,19 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
     private fun createRecycleView() {
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(activity)
+
+        binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (!recyclerView.canScrollVertically(1) && !isLoading) {
+                    viewModel.loadJokes()
+                }
+            }
+        })
+
     }
     private fun loadData() {
 
-        viewModel.loadJokes()
+        viewModel.loadJokes(false)
 
         viewModel.jokesLiveData.observe(viewLifecycleOwner) { jokes ->
             binding.empty.visibility =
@@ -76,9 +89,10 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
             adapter.setNewData(jokes)
         }
 
-        viewModel.progressLiveData.observe(viewLifecycleOwner){ isVisible ->
+        viewModel.progressLiveData.observe(viewLifecycleOwner){ loading ->
+            isLoading = loading
             binding.progress.visibility =
-                if (isVisible) ProgressBar.VISIBLE else ProgressBar.GONE
+                if (isLoading) ProgressBar.VISIBLE else ProgressBar.GONE
         }
 
     }
