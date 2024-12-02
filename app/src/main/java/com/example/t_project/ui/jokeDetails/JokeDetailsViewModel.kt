@@ -1,7 +1,6 @@
 package com.example.t_project.ui.jokeDetails
 
 import android.content.Context
-import android.graphics.Color
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,10 +8,13 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.example.t_project.domain.database.JokesDataBase
+import com.example.t_project.domain.internet.ApiDataSource
 import com.example.t_project.domain.models.Joke
+import com.example.t_project.domain.models.JokeMapper
 import com.example.t_project.domain.repos.JokesRepository
 import com.example.t_project.domain.reposImpl.JokesRepositoryImpl
-import com.example.t_project.domain.usecases.generationRepository.GetJokeItemUseCase
+import com.example.t_project.domain.usecases.jokesRepository.GetJokeItemUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -37,14 +39,8 @@ class JokeDetailsViewModel(
 
     private fun getBackgroundColor(jokeId: String) {
         viewModelScope.launch(Dispatchers.IO) {
-            when (getJokeItemUseCase.execute(jokeId)!!.source) {
-                Joke.SourceEnum.LOCAL -> {
-                    colorLiveData.postValue(Color.BLUE)
-                }
-                Joke.SourceEnum.REMOTE -> {
-                    colorLiveData.postValue(Color.BLACK)
-                }
-            }
+            val joke = getJokeItemUseCase.execute(jokeId)
+            colorLiveData.postValue(joke!!.source.color)
         }
     }
 
@@ -53,7 +49,11 @@ class JokeDetailsViewModel(
         fun provideFactory(): ViewModelProvider.Factory = viewModelFactory {
             initializer {
                 JokeDetailsViewModel(
-                    jokesRepository = JokesRepositoryImpl,
+                    jokesRepository = JokesRepositoryImpl(
+                        ApiDataSource(),
+                        JokesDataBase.INSTANCE.jokeDao(),
+                        JokeMapper()
+                    ),
                 )
             }
         }

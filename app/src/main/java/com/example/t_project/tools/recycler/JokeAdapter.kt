@@ -11,6 +11,7 @@ import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback
 import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback.Companion.ANSWER_KEY
 import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback.Companion.CATEGORY_KEY
 import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback.Companion.QUESTION_KEY
+import com.example.t_project.tools.recycler.util.JokeDiffUtilCallback.Companion.SOURCE_KEY
 
 class JokeAdapter(
     private val clickListener: (String) -> Unit
@@ -58,6 +59,7 @@ class JokeAdapter(
                    key.equals(CATEGORY_KEY) -> bundle.getString(key)?.let { holder.bindCategory(it) }
                    key.equals(QUESTION_KEY) -> bundle.getString(key)?.let { holder.bindQuestion(it) }
                    key.equals(ANSWER_KEY) -> bundle.getString(key)?.let { holder.bindAnswer(it) }
+                   key.equals(SOURCE_KEY) -> bundle.getInt(key).let { holder.bindBackgroundColor(it) }
                }
            }
 

@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlinx-serialization")
+    id("kotlin-kapt")
 }
 
 android {
@@ -63,4 +65,10 @@ dependencies {
     // OkHttp
     implementation ("com.squareup.okhttp3:okhttp:4.9.0")
     implementation ("com.squareup.okhttp3:logging-interceptor:4.9.0")
+
+    // Room
+    implementation ("androidx.room:room-runtime:2.6.1") // Библиотека "Room"
+    annotationProcessor ("androidx.room:room-compiler:2.6.1") // Кодогенератор
+    implementation ("androidx.room:room-ktx:2.6.1") // Дополнительно для Kotlin Coroutines, Kotlin Flows
+    kapt ("androidx.room:room-compiler:2.6.1")
 }

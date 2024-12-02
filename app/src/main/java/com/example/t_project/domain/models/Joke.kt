@@ -1,6 +1,6 @@
 package com.example.t_project.domain.models
 
-import com.example.t_project.domain.models.response.ResponseData
+import android.graphics.Color
 
 data class Joke(
     val id: String = "",
@@ -9,16 +9,6 @@ data class Joke(
     val answer: String,
     val source: SourceEnum
 ) {
+    enum class SourceEnum(val color: Int) { LOCAL(Color.BLUE), REMOTE(Color.BLACK), CACHE(Color.RED) }
 
-    enum class SourceEnum { LOCAL, REMOTE }
-    companion object{
-
-        fun fromResponse(responseData: ResponseData) = Joke(
-            id = responseData.id,
-            category = responseData.category,
-            question = responseData.setup,
-            answer = responseData.delivery,
-            source = SourceEnum.REMOTE
-        )
-    }
 }
