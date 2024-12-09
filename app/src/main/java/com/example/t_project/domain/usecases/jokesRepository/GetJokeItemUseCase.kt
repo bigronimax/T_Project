@@ -1,6 +1,6 @@
 package com.example.t_project.domain.usecases.jokesRepository
 
-import com.example.t_project.domain.models.Joke
+import com.example.t_project.domain.entity.Joke
 import com.example.t_project.domain.repos.JokesRepository
 
 class GetJokeItemUseCase(private val jokesRepository: JokesRepository) {
