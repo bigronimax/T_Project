@@ -3,7 +3,7 @@ package com.example.t_project
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.t_project.databinding.ActivityMainBinding
-import com.example.t_project.ui.jokeList.JokeListFragment
+import com.example.t_project.presentation.jokeList.JokeListFragment
 
 class MainActivity : AppCompatActivity() {
 
