@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     id("kotlinx-serialization")
     id("kotlin-kapt")
+    id("kotlin-android")
 }
 
 android {
@@ -68,7 +69,12 @@ dependencies {
 
     // Room
     implementation ("androidx.room:room-runtime:2.6.1") // Библиотека "Room"
-    annotationProcessor ("androidx.room:room-compiler:2.6.1") // Кодогенератор
+    annotationProcessor ("androidx.room:room-compiler:2.6.1")
     implementation ("androidx.room:room-ktx:2.6.1") // Дополнительно для Kotlin Coroutines, Kotlin Flows
-    kapt ("androidx.room:room-compiler:2.6.1")
+    kapt ("androidx.room:room-compiler:2.6.1") // Кодогенератор
+
+    // Dagger
+    implementation("com.google.dagger:dagger:2.34")
+    annotationProcessor  ("com.google.dagger:dagger-compiler:2.34")
+
 }

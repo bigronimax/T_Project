@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.t_project.data.entity.database.LocalJoke
 import com.example.t_project.data.entity.database.RemoteJoke
 
-@Database(entities = [LocalJoke::class, RemoteJoke::class], version = 2)
+@Database(entities = [LocalJoke::class, RemoteJoke::class], version = 2, exportSchema = false)
 abstract class JokesDataBase : RoomDatabase() {
     abstract fun jokeDao() : JokeDao
     companion object {

@@ -6,8 +6,9 @@ import com.example.t_project.data.mapper.JokeMapper
 import com.example.t_project.domain.repos.JokesRemoteDataSource
 import com.example.t_project.domain.repos.JokesRepository
 import java.util.UUID
+import javax.inject.Inject
 
-class JokesRepositoryImpl(
+class JokesRepositoryImpl (
     private val jokesRemoteDataSource: JokesRemoteDataSource,
     private val jokeDao: JokeDao,
     private val jokeMapper: JokeMapper
