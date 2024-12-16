@@ -7,15 +7,30 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.t_project.App
 import com.example.t_project.R
 import com.example.t_project.databinding.FragmentJokeCreateBinding
 import com.example.t_project.domain.entity.Joke
+import com.example.t_project.presentation.ViewModelFactory
+import com.example.t_project.presentation.jokeDetails.JokeDetailsViewModel
+import javax.inject.Inject
 
 class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
 
     private val binding: FragmentJokeCreateBinding by viewBinding(FragmentJokeCreateBinding::bind)
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
     private lateinit var viewModel: JokeCreateViewModel
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        (requireContext() as App).appComponent.inject(this)
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(JokeCreateViewModel::class.java)
+
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

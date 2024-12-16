@@ -4,7 +4,7 @@ import com.example.t_project.domain.entity.Joke
 import com.example.t_project.domain.repos.JokesRepository
 import javax.inject.Inject
 
-class AddNewJokeUseCase (
+class AddNewJokeUseCase @Inject constructor(
     private val jokesRepository: JokesRepository
 ) {
 

@@ -11,11 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.t_project.App
 import com.example.t_project.R
 import com.example.t_project.databinding.FragmentJokeListBinding
+import com.example.t_project.presentation.ViewModelFactory
 import com.example.t_project.presentation.recycler.JokeAdapter
 import com.example.t_project.presentation.jokeCreate.JokeCreateFragment
 import com.example.t_project.presentation.jokeDetails.JokeDetailsFragment
+import javax.inject.Inject
 
 
 class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
@@ -25,6 +28,9 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
     }
 
     private val binding: FragmentJokeListBinding by viewBinding(FragmentJokeListBinding::bind)
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
 
     private lateinit var viewModel: JokeListViewModel
 
@@ -47,8 +53,9 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        (requireContext() as App).appComponent.inject(this)
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, JokeListViewModel.provideFactory())
+        viewModel = ViewModelProvider(this, viewModelFactory)
             .get(JokeListViewModel::class.java)
         viewModel.loadJokes(true, requireContext())
     }
