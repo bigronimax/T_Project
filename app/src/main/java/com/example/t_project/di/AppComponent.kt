@@ -3,6 +3,8 @@ package com.example.t_project.di
 import android.content.Context
 import com.example.t_project.MainActivity
 import com.example.t_project.di.module.DataModule
+import com.example.t_project.di.module.DomainModule
+import com.example.t_project.di.module.PresentationModule
 import com.example.t_project.presentation.jokeCreate.JokeCreateFragment
 import com.example.t_project.presentation.jokeDetails.JokeDetailsFragment
 import com.example.t_project.presentation.jokeDetails.JokeDetailsViewModel
@@ -16,6 +18,8 @@ import javax.inject.Singleton
 @Component(
     modules = [
         DataModule::class,
+        DomainModule::class,
+        PresentationModule::class
     ]
 )
 

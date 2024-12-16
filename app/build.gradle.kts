@@ -74,7 +74,10 @@ dependencies {
     kapt ("androidx.room:room-compiler:2.6.1") // Кодогенератор
 
     // Dagger
-    implementation("com.google.dagger:dagger:2.34")
-    annotationProcessor  ("com.google.dagger:dagger-compiler:2.34")
+    implementation("com.google.dagger:dagger:2.46")
+    implementation("com.google.dagger:dagger-android:2.46")
+    kapt ("com.google.dagger:dagger-compiler:2.46")
+    kapt ("com.google.dagger:dagger-android-processor:2.46")
+    kapt ("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.6.0")
 
 }

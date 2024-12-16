@@ -6,10 +6,21 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.create
+import javax.inject.Inject
 
 object HttpClient {
 
     private const val BASE_URL = "https://v2.jokeapi.dev/joke/"
+
+    @Inject
+    lateinit var api: Api
+
+    @Inject
+    lateinit var okHttpClient: OkHttpClient
+
+    @Inject
+    lateinit var retrofit: Retrofit
+
 
     private val okHttpClient = OkHttpClient()
         .newBuilder()

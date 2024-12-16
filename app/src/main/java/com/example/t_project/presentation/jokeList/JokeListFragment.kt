@@ -53,7 +53,7 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (requireContext() as App).appComponent.inject(this)
+        (requireContext() as App).appComponent.inject(this@JokeListFragment)
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(JokeListViewModel::class.java)

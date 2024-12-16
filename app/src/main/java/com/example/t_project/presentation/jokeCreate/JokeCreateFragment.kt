@@ -25,7 +25,7 @@ class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
     private lateinit var viewModel: JokeCreateViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (requireContext() as App).appComponent.inject(this)
+        (requireContext() as App).appComponent.inject(this@JokeCreateFragment)
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(JokeCreateViewModel::class.java)

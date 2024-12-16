@@ -29,7 +29,7 @@ class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
     private lateinit var viewModel: JokeDetailsViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        (requireContext() as App).appComponent.inject(this)
+        (requireContext() as App).appComponent.inject(this@JokeDetailsFragment)
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(JokeDetailsViewModel::class.java)
