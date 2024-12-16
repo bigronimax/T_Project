@@ -7,7 +7,7 @@
     android:id="@+id/joke_create_fragment_layout"
     android:background="@color/blueBlack"
     android:padding="20dp"
-    tools:context=".ui.jokeCreate.JokeCreateFragment">
+    tools:context=".presentation.jokeCreate.JokeCreateFragment">
 
 
     <EditText
