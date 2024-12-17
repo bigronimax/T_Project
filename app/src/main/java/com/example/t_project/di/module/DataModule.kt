@@ -5,14 +5,17 @@ import androidx.room.Room
 import com.example.t_project.data.datasource.database.JokeDao
 import com.example.t_project.data.datasource.database.JokesDataBase
 import com.example.t_project.data.datasource.internet.Api
-import com.example.t_project.data.datasource.internet.HttpClient
+import com.example.t_project.data.datasource.internet.ApiDataSource
 import com.example.t_project.data.datasource.internet.RequestInterceptor
+import com.example.t_project.data.mapper.JokeMapper
+import com.example.t_project.data.reposImpl.JokesRepositoryImpl
+import com.example.t_project.domain.repos.JokesRemoteDataSource
+import com.example.t_project.domain.repos.JokesRepository
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -56,6 +59,24 @@ class DataModule {
     @Singleton
     fun provideJokeDao(dataBase: JokesDataBase): JokeDao {
         return dataBase.jokeDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideJokesRemoteDataSource(api: Api): JokesRemoteDataSource {
+        return ApiDataSource(api)
+    }
+
+    @Provides
+    @Singleton
+    fun provideJokeMapper(): JokeMapper {
+        return JokeMapper()
+    }
+
+    @Provides
+    @Singleton
+    fun provideJokesRepository(repositoryImpl: JokesRepositoryImpl) : JokesRepository {
+        return repositoryImpl
     }
 
 

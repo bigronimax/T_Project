@@ -3,6 +3,7 @@ package com.example.t_project
 import android.app.Application
 import com.example.t_project.data.datasource.database.JokesDataBase
 import com.example.t_project.di.AppComponent
+import com.example.t_project.di.DaggerAppComponent
 
 class App: Application() {
 

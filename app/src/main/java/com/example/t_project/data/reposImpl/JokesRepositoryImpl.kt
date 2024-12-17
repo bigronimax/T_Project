@@ -8,7 +8,7 @@ import com.example.t_project.domain.repos.JokesRepository
 import java.util.UUID
 import javax.inject.Inject
 
-class JokesRepositoryImpl (
+class JokesRepositoryImpl @Inject constructor(
     private val jokesRemoteDataSource: JokesRemoteDataSource,
     private val jokeDao: JokeDao,
     private val jokeMapper: JokeMapper
