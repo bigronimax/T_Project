@@ -13,7 +13,6 @@ abstract class JokesDataBase : RoomDatabase() {
     abstract fun jokeDao() : JokeDao
     companion object {
         @Volatile
-        @Inject
         lateinit var INSTANCE: JokesDataBase
         fun initDatabase(context: Context) {
             val instance = Room.databaseBuilder(

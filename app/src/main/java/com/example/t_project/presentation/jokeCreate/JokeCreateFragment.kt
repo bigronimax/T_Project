@@ -1,10 +1,12 @@
 package com.example.t_project.presentation.jokeCreate
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.t_project.App
@@ -22,14 +24,13 @@ class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: JokeCreateViewModel
+    private val viewModel: JokeCreateViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[JokeCreateViewModel::class.java]
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        (requireContext() as App).appComponent.inject(this@JokeCreateFragment)
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(JokeCreateViewModel::class.java)
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireContext().applicationContext as App).appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -37,10 +38,10 @@ class JokeCreateFragment : Fragment(R.layout.fragment_joke_create) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(
-            this,
-            JokeCreateViewModel.provideFactory()
-        )[JokeCreateViewModel::class.java]
+//        viewModel = ViewModelProvider(
+//            this,
+//            JokeCreateViewModel.provideFactory()
+//        )[JokeCreateViewModel::class.java]
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }

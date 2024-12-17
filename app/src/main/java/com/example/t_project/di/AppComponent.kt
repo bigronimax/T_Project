@@ -5,6 +5,7 @@ import com.example.t_project.MainActivity
 import com.example.t_project.di.module.DataModule
 import com.example.t_project.di.module.DomainModule
 import com.example.t_project.di.module.PresentationModule
+import com.example.t_project.presentation.ViewModelFactory
 import com.example.t_project.presentation.jokeCreate.JokeCreateFragment
 import com.example.t_project.presentation.jokeDetails.JokeDetailsFragment
 import com.example.t_project.presentation.jokeDetails.JokeDetailsViewModel
@@ -24,6 +25,8 @@ import javax.inject.Singleton
 )
 
 interface AppComponent {
+
+    fun viewModelsFactory(): ViewModelFactory
 
     fun inject(activity: MainActivity)
 

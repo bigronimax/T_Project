@@ -14,8 +14,9 @@ import com.example.t_project.data.reposImpl.JokesRepositoryImpl
 import com.example.t_project.domain.usecases.jokesRepository.AddNewJokeUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class JokeCreateViewModel(
+class JokeCreateViewModel (
     private val generationRepository: JokesRepository
 ): ViewModel() {
     private val addJokeUseCase by lazy { AddNewJokeUseCase(jokesRepository = generationRepository) }

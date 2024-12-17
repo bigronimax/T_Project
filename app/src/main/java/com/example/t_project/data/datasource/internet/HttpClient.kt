@@ -12,14 +12,14 @@ object HttpClient {
 
     private const val BASE_URL = "https://v2.jokeapi.dev/joke/"
 
-    @Inject
-    lateinit var api: Api
-
-    @Inject
-    lateinit var okHttpClient: OkHttpClient
-
-    @Inject
-    lateinit var retrofit: Retrofit
+//    @Inject
+//    lateinit var api: Api
+//
+//    @Inject
+//    lateinit var okHttpClient: OkHttpClient
+//
+//    @Inject
+//    lateinit var retrofit: Retrofit
 
 
     private val okHttpClient = OkHttpClient()

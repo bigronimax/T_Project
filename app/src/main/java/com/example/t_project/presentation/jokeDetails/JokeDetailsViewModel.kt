@@ -17,8 +17,9 @@ import com.example.t_project.data.reposImpl.JokesRepositoryImpl
 import com.example.t_project.domain.usecases.jokesRepository.GetJokeItemUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class JokeDetailsViewModel(
+class JokeDetailsViewModel (
     private val jokesRepository: JokesRepository
 ): ViewModel() {
     private val getJokeItemUseCase by lazy { GetJokeItemUseCase(jokesRepository = jokesRepository) }

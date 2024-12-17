@@ -18,8 +18,9 @@ import com.example.t_project.data.reposImpl.JokesRepositoryImpl
 import com.example.t_project.domain.usecases.jokesRepository.LoadJokesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class JokeListViewModel(
+class JokeListViewModel (
     private val jokesRepository: JokesRepository,
 ): ViewModel() {
 

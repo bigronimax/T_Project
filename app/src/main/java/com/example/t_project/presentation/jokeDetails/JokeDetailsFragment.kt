@@ -1,5 +1,6 @@
 package com.example.t_project.presentation.jokeDetails
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,7 @@ import com.example.t_project.R
 import com.example.t_project.databinding.FragmentJokeDetailsBinding
 import com.example.t_project.domain.entity.Joke
 import com.example.t_project.presentation.ViewModelFactory
+import com.example.t_project.presentation.jokeCreate.JokeCreateViewModel
 import com.example.t_project.presentation.jokeList.JokeListFragment.Companion.JOKE_ITEM_ID_KEY
 import com.example.t_project.presentation.jokeList.JokeListViewModel
 import com.example.t_project.presentation.recycler.CACHE_COLOR
@@ -26,14 +28,13 @@ class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
-    private lateinit var viewModel: JokeDetailsViewModel
+    private val viewModel: JokeDetailsViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[JokeDetailsViewModel::class.java]
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        (requireContext() as App).appComponent.inject(this@JokeDetailsFragment)
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(JokeDetailsViewModel::class.java)
-
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireContext().applicationContext as App).appComponent.inject(this)
     }
 
     override fun onCreateView(
@@ -41,10 +42,10 @@ class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(
-            this,
-            JokeDetailsViewModel.provideFactory()
-        )[JokeDetailsViewModel::class.java]
+//        viewModel = ViewModelProvider(
+//            this,
+//            JokeDetailsViewModel.provideFactory()
+//        )[JokeDetailsViewModel::class.java]
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
