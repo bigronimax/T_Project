@@ -18,8 +18,9 @@ import com.example.t_project.data.reposImpl.JokesRepositoryImpl
 import com.example.t_project.domain.usecases.jokesRepository.LoadJokesUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class JokeListViewModel(
+class JokeListViewModel @Inject constructor(
     private val jokesRepository: JokesRepository,
 ): ViewModel() {
 
@@ -53,17 +54,17 @@ class JokeListViewModel(
     }
 
     companion object {
-        fun provideFactory(): ViewModelProvider.Factory = viewModelFactory {
-            initializer {
-                JokeListViewModel(
-                    jokesRepository = JokesRepositoryImpl(
-                        ApiDataSource(),
-                        JokesDataBase.INSTANCE.jokeDao(),
-                        JokeMapper()
-                    ),
-                )
-            }
-        }
+//        fun provideFactory(): ViewModelProvider.Factory = viewModelFactory {
+//            initializer {
+//                JokeListViewModel(
+//                    jokesRepository = JokesRepositoryImpl(
+//                        ApiDataSource(),
+//                        JokesDataBase.INSTANCE.jokeDao(),
+//                        JokeMapper()
+//                    ),
+//                )
+//            }
+//        }
     }
 
 }

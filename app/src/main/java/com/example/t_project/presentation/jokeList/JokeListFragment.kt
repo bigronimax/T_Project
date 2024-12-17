@@ -1,5 +1,6 @@
 package com.example.t_project.presentation.jokeList
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,11 +12,15 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.t_project.App
 import com.example.t_project.R
 import com.example.t_project.databinding.FragmentJokeListBinding
+import com.example.t_project.presentation.ViewModelFactory
 import com.example.t_project.presentation.recycler.JokeAdapter
 import com.example.t_project.presentation.jokeCreate.JokeCreateFragment
+import com.example.t_project.presentation.jokeCreate.JokeCreateViewModel
 import com.example.t_project.presentation.jokeDetails.JokeDetailsFragment
+import javax.inject.Inject
 
 
 class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
@@ -26,7 +31,12 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
 
     private val binding: FragmentJokeListBinding by viewBinding(FragmentJokeListBinding::bind)
 
-    private lateinit var viewModel: JokeListViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val viewModel: JokeListViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[JokeListViewModel::class.java]
+    }
 
     private var isLoading = false
 
@@ -46,10 +56,13 @@ class JokeListFragment : Fragment(R.layout.fragment_joke_list) {
 
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireContext().applicationContext as App).appComponent.inject(this)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, JokeListViewModel.provideFactory())
-            .get(JokeListViewModel::class.java)
         viewModel.loadJokes(true, requireContext())
     }
 

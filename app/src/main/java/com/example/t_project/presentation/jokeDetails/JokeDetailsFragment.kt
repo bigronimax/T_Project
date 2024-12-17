@@ -1,5 +1,6 @@
 package com.example.t_project.presentation.jokeDetails
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,29 +8,44 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import by.kirich1409.viewbindingdelegate.viewBinding
+import com.example.t_project.App
 import com.example.t_project.R
 import com.example.t_project.databinding.FragmentJokeDetailsBinding
 import com.example.t_project.domain.entity.Joke
+import com.example.t_project.presentation.ViewModelFactory
+import com.example.t_project.presentation.jokeCreate.JokeCreateViewModel
 import com.example.t_project.presentation.jokeList.JokeListFragment.Companion.JOKE_ITEM_ID_KEY
+import com.example.t_project.presentation.jokeList.JokeListViewModel
 import com.example.t_project.presentation.recycler.CACHE_COLOR
 import com.example.t_project.presentation.recycler.LOCAL_COLOR
 import com.example.t_project.presentation.recycler.REMOTE_COLOR
+import javax.inject.Inject
 
 class JokeDetailsFragment : Fragment(R.layout.fragment_joke_details) {
 
     private val binding: FragmentJokeDetailsBinding by viewBinding(FragmentJokeDetailsBinding::bind)
 
-    private lateinit var viewModel: JokeDetailsViewModel
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    private val viewModel: JokeDetailsViewModel by lazy {
+        ViewModelProvider(this, viewModelFactory)[JokeDetailsViewModel::class.java]
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        (requireContext().applicationContext as App).appComponent.inject(this)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel = ViewModelProvider(
-            this,
-            JokeDetailsViewModel.provideFactory()
-        )[JokeDetailsViewModel::class.java]
+//        viewModel = ViewModelProvider(
+//            this,
+//            JokeDetailsViewModel.provideFactory()
+//        )[JokeDetailsViewModel::class.java]
 
         return super.onCreateView(inflater, container, savedInstanceState)
     }
